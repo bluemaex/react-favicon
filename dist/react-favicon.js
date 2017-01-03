@@ -47,6 +47,20 @@ function drawIcon(src, num, cb) {
   img.src = src;
 }
 
+function indexOf(arr, item) {
+  if (arr.indexOf) {
+    return arr.indexOf(item);
+  } else {
+    var i, len = arr.length;
+    for (i = 0; i < len; i++) {
+      if (arr[i] === this) {
+        break;
+      }
+    }
+    return i >= len ? -1 : i;
+  }
+}
+
 var Favicon = React.createClass({
   displayName: 'Favicon',
 
@@ -142,6 +156,14 @@ var Favicon = React.createClass({
     if (prevProps.url === this.props.url && prevProps.animated === this.props.animated && prevProps.alertCount === this.props.alertCount) {
       return;
     }Favicon.update();
+  },
+
+  componentWillUnmount: function() {
+    var existedIdx = indexOf(Favicon.mountedInstances, this);
+    if (existedIdx !== -1) {
+      Favicon.mountedInstances.splice(existedIdx, 1);
+      Favicon.update();
+    }
   },
 
   render: function render() {
